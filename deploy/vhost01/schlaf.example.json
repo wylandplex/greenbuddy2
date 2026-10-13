@@ -1,0 +1,77 @@
+{
+  "mode": "schatten",
+  "dependencies_verified": false,
+  "raid_degradiert_erlaubt": false,
+  "idle_seconds": 2700,
+  "poll_seconds": 60,
+  "plex_preferences": "/home/plex/database/Library/Application Support/Plex Media Server/Preferences.xml",
+  "jellyfin_key_file": "/etc/greenbuddy/jellyfin.key",
+  "minecraft_argument": ".jar",
+  "coach_journal_unit": "bot-caddy.service",
+  "coach_recent_seconds": 2700,
+  "ansprueche": "/run/greenbuddy/ansprueche",
+  "media_conf": "/etc/media-staging.conf",
+  "self_triples": [
+    [
+      1,
+      672,
+      true
+    ],
+    [
+      1,
+      673,
+      true
+    ]
+  ],
+  "bandbreite_schwelle_bytes": 262144,
+  "system_jobs": [
+    "media-staging.service",
+    "backup-taeglich.service",
+    "offsite-backup.service",
+    "smb.service"
+  ],
+  "user_jobs": [
+    [
+      "automation",
+      "medien-nachladen.service"
+    ],
+    [
+      "automation",
+      "medien-nachsuche.service"
+    ]
+  ],
+  "optional_jobs": [],
+  "verbindung_ausnahmen": [
+    25565
+  ],
+  "verbindung_ruhe_ports": [
+    32400
+  ],
+  "verbindung_ruhe_sekunden": 900,
+  "verbindung_ruhe_bytes": 65536,
+  "transient_benutzer": [
+    "automation",
+    "jellyfin",
+    "mediauser"
+  ],
+  "log": "/var/log/greenbuddy/schlaf.jsonl",
+  "aus": "/etc/greenbuddy/aus",
+  "zustand": "/var/lib/greenbuddy/schlaf-zustand.json",
+  "takt_stempel": "/run/greenbuddy/schlaf-takt.json",
+  "wol_interface": "eno1",
+  "stellvertreter_ziel": "gb-register@192.168.1.100",
+  "stellvertreter_schluessel": "/etc/greenbuddy/ssh/id_ed25519",
+  "stellvertreter_known_hosts": "/etc/greenbuddy/ssh/known_hosts",
+  "stellvertreter_pflicht": true,
+  "wan_filter": true,
+  "legitim": "/run/greenbuddy/legitim/vhost01.json",
+  "legitim_max_alter_s": 180,
+  "legitim_stille_s": 900,
+  "legitim_quellen": {},
+  "lan": [
+    "192.168.1.0/24"
+  ],
+  "vpn": [
+    "10.0.0.0/24"
+  ]
+}

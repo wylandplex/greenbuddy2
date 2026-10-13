@@ -1,0 +1,3 @@
+# Je Host einen eigenen Schlüssel einsetzen. Diese Datei wird nicht automatisch aktiviert.
+command="/usr/local/sbin/gb-proxy-ssh --host vhost01",restrict,from="192.168.1.110" ssh-ed25519 OEFFENTLICHER_SCHLUESSEL_VHOST01
+command="/usr/local/sbin/gb-proxy-ssh --host nas01",restrict,from="192.168.1.115" ssh-ed25519 OEFFENTLICHER_SCHLUESSEL_NAS01

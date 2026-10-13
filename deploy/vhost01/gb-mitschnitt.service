@@ -1,0 +1,33 @@
+[Unit]
+Description=GreenBuddy Verbindungen auf vhost01 ohne Wirkung beurteilen
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gb-mitschnitt
+Group=gb-mitschnitt
+ExecStart=/usr/local/sbin/gb-mitschnitt --config /etc/greenbuddy/mitschnitt.json
+Restart=on-failure
+RestartSec=60
+UMask=0077
+ProtectSystem=strict
+ProtectHome=yes
+# b6: nur das eigene Unterverzeichnis; Ansprüche, Takt-Stempel und Lock unter /run/greenbuddy bleiben root.
+ReadWritePaths=/var/log/greenbuddy/mitschnitt /run/greenbuddy/legitim
+NoNewPrivileges=yes
+CapabilityBoundingSet=CAP_NET_RAW
+AmbientCapabilities=CAP_NET_RAW
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_PACKET AF_NETLINK
+MemoryMax=300M
+TimeoutStopSec=10
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

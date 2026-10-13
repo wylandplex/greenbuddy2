@@ -1,0 +1,44 @@
+#!/bin/bash
+# Nach dem Resume: warten, bis die eigene Adresse wieder am Interface liegt, dann per GARP melden.
+# proxy01 gibt seinen Stellvertreter-Alias beim ersten Frame der echten MAC frei; Router und
+# LAN-Clients erneuern ihren ARP-Eintrag sofort statt nach Ablauf (Plan 2026-10-12, R7).
+# NetworkManager baut WOL-Karten erst nach dem Resume ab und setzt die Adresse per DHCP neu; arping
+# scheitert dann (ENETDOWN, EADDRNOTAVAIL). Das heißt nur „noch nicht“: warten und erneut senden, und
+# nach NACHRUNDE_S ein zweites Mal melden, wenn Link und Adresse sicher wieder stehen.
+set -euo pipefail
+
+FRIST_S=60
+NACHRUNDE_S=10
+OKTETT='(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])'
+
+aufruf() { printf 'gb-garp: %s\n' "$1" >&2; exit 2; }
+
+(( $# == 2 )) || aufruf 'Aufruf: gb-garp INTERFACE IPV4'
+IF=$1
+IP=$2
+[[ $IF =~ ^[A-Za-z0-9_][A-Za-z0-9_.-]{0,14}$ && $IF != *..* ]] || aufruf 'Interface ungültig'
+[[ $IP =~ ^$OKTETT\.$OKTETT\.$OKTETT\.$OKTETT$ ]] || aufruf 'IPv4 ungültig'
+
+adresse_da() {
+    local zeilen
+    # Fehlt das Interface kurz nach dem Resume, heißt das nur: noch nicht.
+    zeilen=$(ip -4 -o addr show dev "$IF" 2>/dev/null) || return 1
+    [[ $zeilen == *" inet $IP/"* ]]
+}
+
+versuche=0
+melden() {
+    until adresse_da && arping -q -U -c 3 -w 4 -I "$IF" "$IP" && arping -q -A -c 2 -w 3 -I "$IF" "$IP"; do
+        if (( versuche >= FRIST_S || SECONDS >= FRIST_S )); then
+            printf 'gb-garp: %s nach %d s nicht an %s gemeldet (Adresse fehlt oder arping scheitert)\n' \
+                "$IP" "$FRIST_S" "$IF" >&2
+            exit 1
+        fi
+        versuche=$(( versuche + 1 ))
+        sleep 1
+    done
+}
+
+melden
+sleep "$NACHRUNDE_S"
+melden

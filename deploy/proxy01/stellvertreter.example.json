@@ -1,0 +1,56 @@
+{
+  "interface": "eth0",
+  "listen_ip": "192.168.1.100",
+  "plex_hash": "HIER_BESTAETIGTEN_HASH_EINTRAGEN",
+  "plex_clients": [],
+  "minecraft_whitelist": [],
+  "lan": [
+    "192.168.1.0/24"
+  ],
+  "vpn": [
+    "10.0.0.0/24"
+  ],
+  "log": "/run/greenbuddy/log/stellvertreter.jsonl",
+  "aus": "/etc/greenbuddy/aus",
+  "stellvertretung": {
+    "hosts": {
+      "vhost01": {
+        "ip": "192.168.1.110",
+        "mac": "00:00:5e:00:53:10",
+        "syn_ports": [22, 8096, 32400],
+        "inhalt_ports": [32400, 25565],
+        "quellen_ports": {
+          "8443": ["203.0.113.10"]
+        },
+        "ausgenommen": ["192.168.1.100", "192.168.1.115", "192.168.1.1"]
+      }
+    },
+    "probe": {
+      "ip": "192.168.1.199",
+      "mac": "02:00:00:00:00:99",
+      "syn_ports": [22],
+      "inhalt_ports": [32400, 25565],
+      "quellen_ports": {},
+      "ausgenommen": ["192.168.1.100", "192.168.1.115", "192.168.1.1"]
+    },
+    "wan_name": "",
+    "vpn_interface": "wg0",
+    "register": "/var/lib/greenbuddy/register.json",
+    "status": "/run/greenbuddy/status/stellvertreter.json",
+    "zustand": "/run/greenbuddy/stellvertreter/uebernahme.json",
+    "limits": {
+      "wan_quelle_h": 3,
+      "wan_host_h": 4,
+      "wan_host_tag": 12,
+      "lan_quelle_h": 3,
+      "vpn_quelle_h": 6,
+      "liste_h": 6
+    },
+    "wol_wiederholen_s": 15,
+    "wol_max_s": 180,
+    "stille_s": 3,
+    "stille_max_s": 600,
+    "garp_s": 60,
+    "lebendprobe_s": 5
+  }
+}

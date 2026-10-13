@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+config.yaml
+access_token*.txt
+.aws/
+.agents/
+.codex/

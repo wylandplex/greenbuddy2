@@ -1,0 +1,9 @@
+#!/usr/bin/python3 -I
+"""Dünner Starter aus dem installierten Paket."""
+import sys
+sys.dont_write_bytecode = True
+sys.path.insert(0, "/usr/local/lib/greenbuddy2")
+from greenbuddy2.proxy_ssh import main
+
+if __name__ == "__main__":
+    sys.exit(main())

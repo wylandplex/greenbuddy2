@@ -1,0 +1,40 @@
+[Unit]
+Description=GreenBuddy vhost01 Schlafwächter (Schatten oder aktiv laut /etc/greenbuddy/schlaf.json)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/sbin/gb-schlaf --config /etc/greenbuddy/schlaf.json
+Restart=on-failure
+RestartSec=60
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/log/greenbuddy /run/greenbuddy /var/lib/greenbuddy
+NoNewPrivileges=yes
+# CAP_SYS_BOOT nur, damit logind "systemctl suspend" ohne polkit-Agent zulässt
+# (Berechtigungsprüfung über die Capability des Aufrufers). reboot/kexec selbst
+# bleiben per Systemaufruf-Filter gesperrt. Kein CAP_SYS_ADMIN, kein CAP_WAKE_ALARM.
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH CAP_SETUID CAP_SETGID CAP_SYS_BOOT
+SystemCallFilter=~reboot kexec_load kexec_file_load
+SystemCallErrorNumber=EPERM
+# rtcwake stellt den Wecker per RTC_WKALM_SET-ioctl auf /dev/rtc0 (root:root 0600,
+# keine Capability nötig); /sys bleibt schreibgeschützt und wird nur zurückgelesen.
+# Darum weder ProtectClock noch PrivateDevices: beide sperren /dev/rtc0.
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+LockPersonality=yes
+RestrictRealtime=yes
+# ssh zum Register auf proxy01 braucht nur AF_INET. ProtectHome=read-only stört nicht: Schlüssel und
+# UserKnownHostsFile liegen unter /etc/greenbuddy/ssh, StrictHostKeyChecking=yes schreibt nichts.
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+MemoryMax=300M
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

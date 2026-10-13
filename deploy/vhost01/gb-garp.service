@@ -1,0 +1,35 @@
+[Unit]
+Description=GreenBuddy vhost01 meldet 192.168.1.110 nach dem Resume per GARP (proxy01 gibt frei)
+After=suspend.target
+
+[Service]
+# Ohne RemainAfterExit: die Unit läuft nach jedem Resume erneut.
+Type=oneshot
+User=root
+Environment=PATH=/usr/sbin:/usr/bin
+ExecStart=/usr/local/sbin/gb-garp eno1 192.168.1.110
+TimeoutStartSec=90
+UMask=0077
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+# arping braucht ein Paket-Socket; ip liest die Adressen per Netlink.
+CapabilityBoundingSet=CAP_NET_RAW
+RestrictAddressFamilies=AF_PACKET AF_NETLINK AF_UNIX AF_INET
+PrivateDevices=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+SystemCallArchitectures=native
+MemoryMax=64M
+
+[Install]
+WantedBy=suspend.target

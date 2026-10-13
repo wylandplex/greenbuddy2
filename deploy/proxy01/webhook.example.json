@@ -1,0 +1,13 @@
+{
+  "listen": "127.0.0.1",
+  "port": 8787,
+  "gateway_id": "GATEWAY_ID",
+  "wake_sender": "ABSENDER_ID",
+  "secret_file": "/etc/greenbuddy/gateway.secret",
+  "queue": "/var/lib/greenbuddy/webhook/queue.sqlite3",
+  "register": "/var/lib/greenbuddy/register.json",
+  "upstream": "http://192.168.1.110:8110/threema/incoming",
+  "rate_per_minute": 60,
+  "log": "/var/log/greenbuddy/webhook.jsonl",
+  "aus": "/etc/greenbuddy/aus"
+}

@@ -1,0 +1,19 @@
+{
+  "interface": "eno1",
+  "target": "192.168.1.110",
+  "plex_hash": "HIER_BESTAETIGTEN_HASH_EINTRAGEN",
+  "plex_clients": [],
+  "minecraft_whitelist": [],
+  "lan": [
+    "192.168.1.0/24"
+  ],
+  "vpn": [
+    "10.0.0.0/24"
+  ],
+  "log": "/var/log/greenbuddy/mitschnitt/mitschnitt.jsonl",
+  "aus": "/etc/greenbuddy/aus",
+  "legitim": "/run/greenbuddy/legitim/vhost01.json",
+  "legitim_ttl_s": 3600,
+  "legitim_max": 4096,
+  "wan_name": ""
+}
